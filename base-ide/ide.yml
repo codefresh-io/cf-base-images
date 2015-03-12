@@ -1,0 +1,38 @@
+include:
+  - base.yml
+
+services:
+  -
+    name: cf-ide
+    cwd: /opt/codefresh/{{name}}
+    repo: '{{name}}'
+    gitUrl: git@github.com:codefresh/orionPlugins.git
+
+    services:
+      git:
+      port:
+        PORT: 8081
+
+    install:
+      - RUN mkdir -p /workspace/workspaces
+      - WORKDIR {{cwd}}/org.eclipse.orion.client/modules/orionode
+      - RUN npm install
+      - RUN grunt codefresh
+      - WORKDIR {{cwd}}/orionexpress
+      - RUN npm install
+      - RUN grunt build
+
+#    build:
+#      - cd {{cwd}}/orionexpress
+#      - npm install
+
+    run:
+      - cd {{cwd}}/orionexpress
+      - node cli/fresh-cli.js -w /workspace -p 8081
+
+images:
+  - name: codefresh/cf-base-ide
+    base: codefresh/cf-base
+    services:
+      cf-ide:
+        branch: editor-tabs
