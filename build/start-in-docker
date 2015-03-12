@@ -1,0 +1,16 @@
+#!/usr/local/bin/bash
+
+set -e
+
+[ -z "$TAG" ] && TAG environment variable is required && exit 1
+[ -z "$CF_API" ] && CF_API environment variable is required && exit 1
+[ -z "$CF_BASE_IMAGES" ] && CF_BASE_IMAGES environment variable is required && exit 1
+
+CF_BASE_EXISTS=$(docker images | grep "codefresh/cf-base:$TAG")
+[ "$CF_BASE_EXISTS" ] && docker rmi codefresh/cf-base:$TAG
+
+CF_BASE_IDE_EXISTS=$(docker images | grep "codefresh/cf-base-ide:$TAG")
+[ "$CF_BASE_EXISTS" ] && docker rmi codefresh/cf-base-ide:$TAG
+
+#will generate and build cf-base and cf-base-ide
+node $CF_API/runtime/cli $CF_BASE_IMAGES/base-ide/ide.yml $TAG
