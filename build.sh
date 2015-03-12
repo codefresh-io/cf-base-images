@@ -3,7 +3,7 @@ set -e
 
 TAG=$1
 
-[ -z "$TAG" ] && tag argument is required && exit 1
+[ -z "$TAG" ] && echo tag argument is required && exit 1
 
 ORIGINAL_DIR="$PWD"
 
