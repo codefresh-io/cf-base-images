@@ -2,9 +2,9 @@
 
 set -e
 
-[ -z "$TAG" ] && TAG environment variable is required && exit 1
-[ -z "$CF_API" ] && CF_API environment variable is required && exit 1
-[ -z "$CF_BASE_IMAGES" ] && CF_BASE_IMAGES environment variable is required && exit 1
+[ -z "$TAG" ] && echo TAG environment variable is required && exit 1
+[ -z "$CF_API" ] && echo CF_API environment variable is required && exit 1
+[ -z "$CF_BASE_IMAGES" ] && echo CF_BASE_IMAGES environment variable is required && exit 1
 
 IS_DOCKER_RUNNING="$(service docker status | grep 'not running' || echo 'running')"
 [ "$IS_DOCKER_RUNNING" == 'running' ] && \
