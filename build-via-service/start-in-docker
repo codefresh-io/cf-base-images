@@ -1,0 +1,23 @@
+#!/usr/local/bin/bash
+
+set -e
+
+[ -z "$TAG" ] && echo TAG environment variable is required && exit 1
+[ -z "$CF_API" ] && echo CF_API environment variable is required && exit 1
+[ -z "$CF_BASE_IMAGES" ] && echo CF_BASE_IMAGES environment variable is required && exit 1
+
+IS_DOCKER_RUNNING="$(service docker status | grep 'not running' || echo 'running')"
+[ "$IS_DOCKER_RUNNING" == 'running' ] && \
+  service docker stop
+
+CF_BASE_EXISTS=$(docker images | awk '{print $1,":",$2}' | tr -d "[:blank:]" | grep "codefresh/cf-base:$TAG" || echo)
+[ "$CF_BASE_EXISTS" ] && docker rmi codefresh/cf-base:$TAG
+
+CF_BASE_IDE_EXISTS=$(docker images | awk '{print $1,":",$2}' | tr -d "[:blank:]" | grep "codefresh/cf-base-ide:$TAG" || echo)
+[ "$CF_BASE_IDE_EXISTS" ] && docker rmi codefresh/cf-base-ide:$TAG
+
+ORIGINAL_USER=$(ls -la $CF_API/init.sh | awk '{print $3}')
+cd $CF_API && sudo bash init.sh ; chown -R $ORIGINAL_USER $CF_API
+
+#will generate and build cf-base and cf-base-ide
+node $CF_API/runtime/cli.js $CF_BASE_IMAGES/base-ide/ide.yml $TAG
