@@ -12,12 +12,15 @@ FROM codefresh/cf-base:$TAG
   RUN sudo apt-get -q -y install git
   RUN mkdir -p /opt/codefresh/cf-ide
   WORKDIR /opt/codefresh/cf-ide/..
+
+  RUN echo build 19-03-2015 10:48:00
+
   RUN git clone git@github.com:codefresh/orionPlugins.git cf-ide
   WORKDIR /opt/codefresh/cf-ide
-  RUN git checkout editor-tabs
+  RUN git checkout orion-v8
 
   #contributed from service "cf-ide"
-  RUN mkdir -p /workspace/workspaces
+  RUN mkdir -p /workdir
   WORKDIR /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode
   RUN npm install
   RUN grunt codefresh

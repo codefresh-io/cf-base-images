@@ -1,4 +1,4 @@
-FROM codefresh/cf-base
+FROM codefresh/cf-base:develop
 
 #lifecycle "install" step
   #contributed from service "ssh-key"
@@ -7,15 +7,18 @@ FROM codefresh/cf-base
   RUN chmod 700 ~/.ssh/
   RUN chmod 600 ~/.ssh/*
   RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
-  
+
   #contributed from service "git"
   RUN sudo apt-get -q -y install git
   RUN mkdir -p /opt/codefresh/cf-ide
   WORKDIR /opt/codefresh/cf-ide/..
+
+  RUN echo build 19-03-2015 12:09:00
+
   RUN git clone git@github.com:codefresh/orionPlugins.git cf-ide
   WORKDIR /opt/codefresh/cf-ide
-  RUN git checkout editor-tabs
-  
+  RUN git checkout orion-v8
+
   #contributed from service "cf-ide"
   RUN mkdir -p /workspace/workspaces
   WORKDIR /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode
@@ -24,13 +27,12 @@ FROM codefresh/cf-base
   WORKDIR /opt/codefresh/cf-ide/orionexpress
   RUN npm install
   RUN grunt build
-  
+
 #lifecycle "config" step
   #contributed from service "port"
   EXPOSE 8081
-  
+
   # default environment variables
 
-RUN echo build 5194770a-f7df-4266-9484-c4d03c3e21c1
 ADD start.sh /opt/codefresh/
 CMD bash /opt/codefresh/start.sh
