@@ -1,4 +1,4 @@
-FROM codefresh/cf-base:develop
+FROM codefresh/cf-base:guy
 
 #lifecycle "install" step
   #contributed from service "ssh-key"
@@ -13,14 +13,14 @@ FROM codefresh/cf-base:develop
   RUN mkdir -p /opt/codefresh/cf-ide
   WORKDIR /opt/codefresh/cf-ide/..
 
-  RUN echo build 19-03-2015 12:09:00
+  RUN echo build 21-03-2015 17:40:00
 
   RUN git clone git@github.com:codefresh/orionPlugins.git cf-ide
   WORKDIR /opt/codefresh/cf-ide
   RUN git checkout orion-v8
 
   #contributed from service "cf-ide"
-  RUN mkdir -p /workspace/workspaces
+  RUN mkdir -p /workdir
   WORKDIR /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode
   RUN npm install
   RUN grunt codefresh
