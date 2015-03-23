@@ -1,4 +1,4 @@
-FROM codefresh/cf-base:guy
+FROM codefresh/cf-base:develop
 
 #lifecycle "install" step
   #contributed from service "ssh-key"
@@ -13,7 +13,7 @@ FROM codefresh/cf-base:guy
   RUN mkdir -p /opt/codefresh/cf-ide
   WORKDIR /opt/codefresh/cf-ide/..
 
-  RUN echo build 21-03-2015 17:40:00
+  RUN echo build 22-03-2015 16:42:00
 
   RUN git clone git@github.com:codefresh/orionPlugins.git cf-ide
   WORKDIR /opt/codefresh/cf-ide
