@@ -13,7 +13,7 @@ FROM codefresh/cf-base:develop
   RUN mkdir -p /opt/codefresh/cf-ide
   WORKDIR /opt/codefresh/cf-ide/..
 
-  RUN echo build 22-03-2015 16:42:00
+  RUN echo build 23-03-2015 15:25:00
 
   RUN git clone git@github.com:codefresh/orionPlugins.git cf-ide
   WORKDIR /opt/codefresh/cf-ide
