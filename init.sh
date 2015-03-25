@@ -5,10 +5,10 @@ TAG=$1
 
 [ -z "$TAG" ] && echo TAG environment variable is required && exit 1
 
-UID=$(uuidgen)
+RANDOM=$(uuidgen)
 
 sed \
   -e "s/\$TAG/$TAG/g" \
-  -e "s/\$UID/$UID/g" \
+  -e "s/\$UID/$RANDOM/g" \
    < images/base-ide/build/Dockerfile.template > images/base-ide/build/Dockerfile
 
