@@ -17,7 +17,7 @@ FROM codefresh/cf-base:$TAG
 
   RUN git clone git@github.com:codefresh/orionPlugins.git cf-ide
   WORKDIR /opt/codefresh/cf-ide
-  RUN git checkout orion-v8
+  RUN git checkout develop
 
   #contributed from service "cf-ide"
   RUN mkdir -p /workdir
@@ -26,6 +26,7 @@ FROM codefresh/cf-base:$TAG
   RUN grunt codefresh
   WORKDIR /opt/codefresh/cf-ide/orionexpress
   RUN npm install
+  RUN bower install --allow-root
   RUN grunt build
 
 #lifecycle "config" step
