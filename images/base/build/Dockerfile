@@ -1,21 +1,24 @@
 FROM ubuntu:14.04
 
-#lifecycle "install" step
-  #contributed from service "apt"
-  RUN sudo apt-get update
-  RUN sudo apt-get -q -y install git ssh sshpass
-  
-  #contributed from service "nodejs"
-  RUN sudo apt-get -q -y install nodejs npm
-  RUN sudo ln -s "$(which nodejs)" /usr/bin/node
-  RUN npm install -g npm bower grunt-cli
-  
-  #contributed from service "ruby"
-  RUN apt-get -q -y install ruby
-  
-  #contributed from service "sass"
-  RUN gem install sass
-  
-  # default environment variables
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN echo build 5194770a-f7df-4266-9484-c4d03c3e21c1
+
+#contributed from service "apt"
+  RUN sudo apt-get update
+  RUN sudo apt-get -q -y install git ssh sshpass curl build-essential
+
+
+# Install nvm with node, iojs and npm
+RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash \
+    && source /root/.nvm/nvm.sh \
+    && nvm install stable \
+    && nvm alias node stable \
+    && nvm install iojs stable \
+    && nvm alias iojs stable \
+    && nvm use node
+
+ENV PATH /root/.nvm/versions/node/v0.12.2/bin:$PATH
+
+RUN npm install -g bower grunt-cli
+RUN apt-get -q -y install ruby
+RUN gem install sass
