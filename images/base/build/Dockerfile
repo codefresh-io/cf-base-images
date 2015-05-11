@@ -1,24 +1,29 @@
 FROM ubuntu:14.04
 
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+# install dependencies
+RUN apt-get update && apt-get install -y \
+      curl \
+      npm \
+      nodejs \
+      git \
+      ssh \
+      sshpass;
 
+# compatibility fix for node on ubuntu
+RUN ln -s /usr/bin/nodejs /usr/bin/node;
 
-#contributed from service "apt"
-  RUN sudo apt-get update
-  RUN sudo apt-get -q -y install git ssh sshpass curl build-essential
+# install nvm
+RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | sh;
 
-
-# Install nvm with node, iojs and npm
-RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | bash \
-    && source /root/.nvm/nvm.sh \
-    && nvm install stable \
-    && nvm alias node stable \
-    && nvm install iojs stable \
-    && nvm alias iojs stable \
-    && nvm use node
+# invoke nvm to install node
+RUN cp -f ~/.nvm/nvm.sh ~/.nvm/nvm-tmp.sh; \
+    echo "nvm install stable; nvm alias node stable; nvm install iojs stable; nvm alias iojs stable" >> ~/.nvm/nvm-tmp.sh; \
+    sh ~/.nvm/nvm-tmp.sh; \
+    rm ~/.nvm/nvm-tmp.sh;
 
 ENV PATH /root/.nvm/versions/node/v0.12.2/bin:$PATH
 
-RUN npm install -g bower grunt-cli
+RUN npm install -g bower
+RUN npm install -g grunt-cli
 RUN apt-get -q -y install ruby
 RUN gem install sass
