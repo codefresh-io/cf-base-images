@@ -7,6 +7,10 @@ TAG=$1
 
 RANDOM=$(uuidgen)
 
+[ -e "images/base-ide/build/Dockerfile" ] && rm images/base-ide/build/Dockerfile
+
+echo generated UID is $RANDOM
+
 sed \
   -e "s/\$TAG/$TAG/g" \
   -e "s/\$UID/$RANDOM/g" \
