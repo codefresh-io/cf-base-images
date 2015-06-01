@@ -5,7 +5,7 @@ TAG=$1
 
 [ -z "$TAG" ] && echo TAG environment variable is required && exit 1
 
-RANDOM=$(uuidgen)
+RANDOM=$(date)
 
 [ -e "images/base-ide/build/Dockerfile" ] && rm images/base-ide/build/Dockerfile
 
