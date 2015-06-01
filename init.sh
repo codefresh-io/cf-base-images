@@ -9,7 +9,7 @@ RANDOM=$(date)
 
 [ -e "images/base-ide/build/Dockerfile" ] && rm images/base-ide/build/Dockerfile
 
-echo generated UID is $RANDOM
+echo generated UID is: $RANDOM
 
 sed \
   -e "s/\$TAG/$TAG/g" \
