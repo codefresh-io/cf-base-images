@@ -17,11 +17,11 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | s
 
 # invoke nvm to install node
 RUN cp -f ~/.nvm/nvm.sh ~/.nvm/nvm-tmp.sh; \
-    echo "nvm install stable; nvm alias node stable; nvm install iojs stable; nvm alias iojs stable" >> ~/.nvm/nvm-tmp.sh; \
+    echo "nvm install 0.12.3; nvm alias 0.12.3 stable; nvm install iojs stable; nvm alias iojs stable" >> ~/.nvm/nvm-tmp.sh; \
     sh ~/.nvm/nvm-tmp.sh; \
     rm ~/.nvm/nvm-tmp.sh;
 
-ENV PATH /root/.nvm/versions/node/v0.12.2/bin:$PATH
+ENV PATH /root/.nvm/versions/node/v0.12.3/bin:$PATH
 
 RUN npm install -g bower
 RUN npm install -g grunt-cli
