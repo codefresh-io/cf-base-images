@@ -1,3 +1,5 @@
+set -e
+
 echo on
 cd /
 #eval "ssh-agent -s"
