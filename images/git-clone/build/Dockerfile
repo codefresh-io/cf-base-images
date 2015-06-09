@@ -1,9 +1,6 @@
-FROM ubuntu:14.04
+FROM gliderlabs/alpine
 
-# Update aptitude with new repo and install software from updated repo
-RUN \
-  apt-get update \
-  && apt-get install -y git
+RUN apk --update add git
 
 COPY ./start.sh /run/start.sh
 
