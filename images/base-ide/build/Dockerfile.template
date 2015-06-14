@@ -11,6 +11,10 @@ FROM codefresh/cf-base:$TAG
   #contributed from service "git"
   RUN sudo apt-get -q -y install git
 
+  COPY resources/npm-delta-analyzer /opt/codefresh/npm-delta-analyzer
+  WORKDIR /opt/codefresh/npm-delta-analyzer
+  npm install
+
   #create a small npm cache for common things
   WORKDIR /tmp/npm-init-cache/
   COPY resources/package.json /tmp/npm-init-cache/package.json
