@@ -10,6 +10,13 @@ FROM codefresh/cf-base:$TAG
 
   #contributed from service "git"
   RUN sudo apt-get -q -y install git
+
+  #create a small npm cache for common things
+  WORKDIR /tmp/npm-init-cache/
+  COPY resources/package.json /tmp/npm-init-cache/package.json
+  RUN npm install \
+    && rm -rf /tmp/npm-init-cache
+
   RUN mkdir -p /opt/codefresh/cf-ide
   WORKDIR /opt/codefresh/cf-ide/..
 
