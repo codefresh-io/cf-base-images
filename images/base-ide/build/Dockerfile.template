@@ -13,7 +13,7 @@ FROM codefresh/cf-base:$TAG
 
   COPY resources/npm-delta-analyzer /opt/codefresh/npm-delta-analyzer
   WORKDIR /opt/codefresh/npm-delta-analyzer
-  npm install
+  RUN npm install
 
   #create a small npm cache for common things
   WORKDIR /tmp/npm-init-cache/
