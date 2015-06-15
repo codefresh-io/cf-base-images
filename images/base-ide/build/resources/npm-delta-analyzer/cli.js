@@ -14,7 +14,7 @@ var newFilePath = process.argv[4];
 var oldPackageJson = require(oldFilePath);
 var newPackageJson = require(newFilePath);
 
-//TODO: support uninstall
+
 if (cmd === "install") {
 
   //TODO: dev dependencies
@@ -25,6 +25,12 @@ if (cmd === "install") {
 
   console.log(newModulesWithVersions.join(' '));
 }
+
+else if (cmd === "uninstall") {
+  var removedModules = _.difference(_.keys(oldPackageJson.dependencies), _.keys(newPackageJson.dependencies));
+  console.log(removedModules.join(' '));
+}
+
 else {
   console.error('unknown instruction: ' + cmd);
   process.exit(1);
