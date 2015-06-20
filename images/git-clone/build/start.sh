@@ -9,8 +9,8 @@ chmod 600 ~/.ssh/*
 
 #eval "ssh-agent -s"
 #ssh-add $key
-echo "cloning  $repo"
+echo "cloning $repo"
 git clone $repo /src
 ls -la
 cd /src
-git reset --hard $SHA1
+git checkout $SHA1
