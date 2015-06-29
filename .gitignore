@@ -1,2 +1,3 @@
 images/base-ide/build/Dockerfile
 tmp/
+images/base-ide/build/resources/cf-ide/
