@@ -12,17 +12,18 @@ RUN \
 
 # install nvm
 RUN \
-  curl https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | sh \
-  && source ~/.nvm/nvm.sh \
-  && nvm install 0.12.3 \
+  curl https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | sh
+
+RUN \
+  echo 'nvm install 0.12.3 \
   && nvm alias 0.12.3 stable \
   && nvm install iojs \
-  && nvm alias iojs stable
+  && nvm alias iojs stable' | bash -il
 
 #install standard global node tools: bower, grunt-cli,
 RUN \
-  nvm use 0.12.3 \
-  && npm install -g bower grunt-cli gulp
+  echo 'nvm use 0.12.3 \
+  && npm install -g bower grunt-cli gulp' | bash -il
 
 #add our node based npm delta analyzer tool
 ADD resources/npm-delta-analyzer /opt/codefresh/npm-delta-analyzer

@@ -19,7 +19,7 @@ sed \
 #inject IDE to correct place where cf-base-ide expects it to be
 mkdir -p tmp
 cd tmp
-if [ -e "tmp/cf-ide/.git" ] ; then \
+if [ -e "cf-ide/.git" ] ; then \
   cd cf-ide
   git pull
   git checkout develop
