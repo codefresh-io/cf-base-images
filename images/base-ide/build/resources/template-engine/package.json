@@ -1,0 +1,16 @@
+{
+  "name": "template-engine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "nathan grunzweig",
+  "license": "ISC",
+  "dependencies": {
+    "filewalker": "^0.1.2",
+    "q": "^1.4.1",
+    "swig": "^1.4.2"
+  }
+}
