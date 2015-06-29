@@ -27,22 +27,22 @@ RUN \
 
 #add our node based npm delta analyzer tool
 ADD resources/npm-delta-analyzer /opt/codefresh/npm-delta-analyzer
-RUN echo "(cd /opt/codefresh/npm-delta-analyzer && npm install)" | bash
+RUN echo "(cd /opt/codefresh/npm-delta-analyzer && npm install)" | bash -il
 
 #add our node based templating tool
 ADD resources/template-engine /opt/codefresh/template-engine
-RUN echo "(cd /opt/codefresh/template-engine && npm install)" | bash
+RUN echo "(cd /opt/codefresh/template-engine && npm install)" | bash -il
 
 #add the ide
 ADD resources/cf-ide /opt/codefresh/cf-ide/
 RUN \
-  echo "(cd /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode \
+  echo '(cd /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode \
   && npm install \
   && grunt codefresh \
   && cd /opt/codefresh/cf-ide/orionexpress \
   && npm install \
   && bower install --allow-root \
-  && grunt build)" | bash
+  && grunt build)' | bash -il
 EXPOSE 8081
 
 ADD start.sh /opt/codefresh/
