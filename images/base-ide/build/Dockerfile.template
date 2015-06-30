@@ -1,14 +1,22 @@
 
-#jessie is an optimized release of debian and buildpack-deps:jessie adds all sorts of things on it such as curl, wget and "getters" ... git, subversion and "scms".. g++ and other compilation deps.
-
-FROM buildpack-deps:jessie
+FROM ubuntu:14.04
 
 # install dependencies
 RUN \
-  apt-get update && apt-get install -y  --no-install-recommends \
+  apt-get update -qq \
+  && apt-get install -y  --no-install-recommends \
     ssh \
     sshpass \
-  && rm -rf /var/lib/apt/lists/*
+    git \
+    curl \
+    ca-certificates \
+# this is for orion terminal \
+    make \
+    python \
+    g++ \
+  && apt-get clean autoclean \
+  && apt-get autoremove --yes \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # install nvm
 RUN \
@@ -16,38 +24,40 @@ RUN \
 
 #install nodes/iojs and set up node 0.12.3 as default
 RUN \
-  echo 'nvm install 0.12.3 \
+  bash -ilc 'nvm install 0.12.3 \
   && nvm alias 0.12.3 stable \
   && nvm install iojs \
   && nvm alias iojs stable \
-  && nvm alias default 0.12.3' | bash -il
+  && nvm alias default 0.12.3'
 
 #install standard global node tools: bower, grunt-cli,
-RUN \
-  echo 'npm install -g bower grunt-cli gulp' | bash -il
+RUN bash -ilc 'npm install -g bower grunt-cli gulp && npm cache clean'
 
 #add our node based npm delta analyzer tool
 ADD resources/npm-delta-analyzer /opt/codefresh/npm-delta-analyzer
-RUN echo 'cd /opt/codefresh/npm-delta-analyzer && npm install' | bash -il
+RUN bash -ilc 'cd /opt/codefresh/npm-delta-analyzer && npm install && npm cache clean'
 
 #add our node based templating tool
 ADD resources/template-engine /opt/codefresh/template-engine
-RUN echo 'cd /opt/codefresh/template-engine && npm install' | bash -il
+RUN bash -ilc 'cd /opt/codefresh/template-engine && npm install && npm cache clean'
 
 #add the ide
 ADD resources/cf-ide /opt/codefresh/cf-ide/
 RUN \
-  echo 'cd /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode \
+  bash -ilc 'cd /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode \
   && npm install \
   && grunt codefresh \
   && cd /opt/codefresh/cf-ide/orionexpress \
   && npm install \
-  && bower install --allow-root \
-  && grunt build' | bash -il
+  && bower install --allow-root --config.interactive=false \
+  && grunt build \
+  && npm cache clean \
+  && bower cache clean --allow-root --config.interactive=false'
+
 EXPOSE 8081
 
 ADD start.sh /opt/codefresh/
-CMD bash /opt/codefresh/start.sh
+CMD bash -il /opt/codefresh/start.sh
 
 #TODO: onbuild read package.json and deduce node version if possible, and use it with nvm
 
