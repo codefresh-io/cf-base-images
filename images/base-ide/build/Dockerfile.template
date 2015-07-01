@@ -10,10 +10,9 @@ RUN \
     git \
     curl \
     ca-certificates \
+    build-essential \
 # this is for orion terminal \
-    make \
     python \
-    g++ \
   && apt-get clean autoclean \
   && apt-get autoremove --yes \
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
