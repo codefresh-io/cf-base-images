@@ -1,50 +1,65 @@
-FROM codefresh/cf-base:$TAG
 
-#lifecycle "install" step
-  #contributed from service "ssh-key"
-  RUN apt-get -q -y install ssh sshpass
-  ADD resources/ssh-key/* /root/.ssh/
-  RUN chmod 700 ~/.ssh/
-  RUN chmod 600 ~/.ssh/*
-  RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
+FROM ubuntu:14.04
 
-  #contributed from service "git"
-  RUN sudo apt-get -q -y install git
+# install dependencies
+RUN \
+  apt-get update -qq \
+  && apt-get install -y  --no-install-recommends \
+    ssh \
+    sshpass \
+    git \
+    curl \
+    ca-certificates \
+    build-essential \
+# this is for orion terminal \
+    python \
+  && apt-get clean autoclean \
+  && apt-get autoremove --yes \
+  && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-  COPY resources/npm-delta-analyzer /opt/codefresh/npm-delta-analyzer
-  WORKDIR /opt/codefresh/npm-delta-analyzer
-  RUN npm install
+# install nvm
+RUN \
+  curl https://raw.githubusercontent.com/creationix/nvm/v0.25.1/install.sh | sh
 
-  #create a small npm cache for common things
-  WORKDIR /tmp/npm-init-cache/
-  COPY resources/package.json /tmp/npm-init-cache/package.json
-  RUN npm install \
-    && rm -rf /tmp/npm-init-cache
+#install nodes/iojs and set up node 0.12.3 as default
+RUN \
+  bash -ilc 'nvm install 0.12.3 \
+  && nvm alias 0.12.3 stable \
+  && nvm install iojs \
+  && nvm alias iojs stable \
+  && nvm alias default 0.12.3'
 
-  RUN mkdir -p /opt/codefresh/cf-ide
-  WORKDIR /opt/codefresh/cf-ide/..
+#install standard global node tools: bower, grunt-cli,
+RUN bash -ilc 'npm install -g bower grunt-cli gulp && npm cache clean'
 
-  RUN echo $UID
+#add our node based npm delta analyzer tool
+ADD resources/npm-delta-analyzer /opt/codefresh/npm-delta-analyzer
+RUN bash -ilc 'cd /opt/codefresh/npm-delta-analyzer && npm install && npm cache clean'
 
-  RUN git clone git@github.com:codefresh/orionPlugins.git cf-ide
-  WORKDIR /opt/codefresh/cf-ide
-  RUN git checkout develop
+#add our node based templating tool
+ADD resources/template-engine /opt/codefresh/template-engine
+RUN bash -ilc 'cd /opt/codefresh/template-engine && npm install && npm cache clean'
 
-  #contributed from service "cf-ide"
-  RUN mkdir -p /workdir
-  WORKDIR /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode
-  RUN npm install
-  RUN grunt codefresh
-  WORKDIR /opt/codefresh/cf-ide/orionexpress
-  RUN npm install
-  RUN bower install --allow-root
-  RUN grunt build
+#add the ide
+ADD resources/cf-ide /opt/codefresh/cf-ide/
+RUN \
+  bash -ilc 'cd /opt/codefresh/cf-ide/org.eclipse.orion.client/modules/orionode \
+  && npm install \
+  && grunt codefresh \
+  && cd /opt/codefresh/cf-ide/orionexpress \
+  && npm install \
+  && bower install --allow-root --config.interactive=false \
+  && grunt build \
+  && npm cache clean \
+  && bower cache clean --allow-root --config.interactive=false'
 
-#lifecycle "config" step
-  #contributed from service "port"
-  EXPOSE 8081
-
-  # default environment variables
+EXPOSE 8081
 
 ADD start.sh /opt/codefresh/
-CMD bash /opt/codefresh/start.sh
+CMD bash -il /opt/codefresh/start.sh
+
+#TODO: onbuild read package.json and deduce node version if possible, and use it with nvm
+
+#ADD resources/template /tmp/resources
+#ONBUILD ADD substitutions/withSubstitutionsEnv.sh /opt/codefresh/substitutions/withSubstitutionsEnv.sh
+#ONBUILD RUN bash withSubstitutionEnv.sh node /opt/codefresh/template-engine/cli.js /tmp/resources/
