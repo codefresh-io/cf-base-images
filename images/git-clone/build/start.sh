@@ -1,5 +1,7 @@
 set -e
 
+[ -z "$SHA" ] && [ -z "$BRANCH" ] && echo "missing SHA and BRANCH vars" && exit 1
+
 echo on
 cd /
 
@@ -13,4 +15,16 @@ echo "cloning $repo"
 git clone $repo /src
 ls -la
 cd /src
-git checkout $SHA1
+
+if [ "$BRANCH" ]; then
+  git checkout $BRANCH
+  if [ "$SHA" ]; then
+    git reset $SHA
+  fi
+else
+  git checkout $SHA
+fi
+
+[ "$OWNER" ] && chown -R $OWNER .
+
+
