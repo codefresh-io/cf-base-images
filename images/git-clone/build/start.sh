@@ -1,6 +1,6 @@
 set -e
 
-[ -z "$SHA" ] && [ -z "$BRANCH" ] && echo "missing SHA and BRANCH vars" && exit 1
+[ -z "$SHA" ] && [ -z "$BRANCH" ] && (echo "missing SHA and BRANCH vars" | tee /dev/stderr) && exit 1
 
 echo on
 cd /
