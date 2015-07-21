@@ -25,6 +25,6 @@ else
   git checkout $SHA
 fi
 
-[ "$OWNER" ] && chown -R $OWNER .
+[ -z "$OWNER" ] || chown -R $OWNER .
 
 
