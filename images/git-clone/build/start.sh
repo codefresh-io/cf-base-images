@@ -19,7 +19,7 @@ cd /src
 if [ "$BRANCH" ]; then
   git checkout $BRANCH
   if [ "$SHA" ]; then
-    git reset $SHA
+    git reset $SHA --hard
   fi
 else
   git checkout $SHA
