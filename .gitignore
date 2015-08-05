@@ -1,1 +1,5 @@
 images/base-ide/build/Dockerfile
+images/base-ide/build/Dockerfile.build
+images/base/build/Dockerfile.build
+images/git-clone/build/Dockerfile.build
+
