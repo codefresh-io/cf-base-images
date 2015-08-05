@@ -1,5 +1,6 @@
 images/base-ide/build/Dockerfile
+tmp/
+images/base-ide/build/resources/cf-ide/
 images/base-ide/build/Dockerfile.build
 images/base/build/Dockerfile.build
 images/git-clone/build/Dockerfile.build
-

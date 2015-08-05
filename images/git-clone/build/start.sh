@@ -1,5 +1,7 @@
 set -e
 
+[ -z "$SHA" ] && [ -z "$BRANCH" ] && (echo "missing SHA and BRANCH vars" | tee /dev/stderr) && exit 1
+
 echo on
 cd /
 
@@ -9,8 +11,20 @@ chmod 600 ~/.ssh/*
 
 #eval "ssh-agent -s"
 #ssh-add $key
-echo "cloning  $repo"
+echo "cloning $repo"
 git clone $repo /src
 ls -la
 cd /src
-git reset --hard $SHA1
+
+if [ "$BRANCH" ]; then
+  git checkout $BRANCH
+  if [ "$SHA" ]; then
+    git reset $SHA --hard
+  fi
+else
+  git checkout $SHA
+fi
+
+[ -z "$OWNER" ] || chown -R $OWNER .
+
+
