@@ -26,5 +26,4 @@ else
 fi
 
 [ -z "$OWNER" ] || chown -R $OWNER .
-
-
+find ./ -exec touch -r /run/start.sh '{}' \;
