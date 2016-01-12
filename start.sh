@@ -2,7 +2,6 @@ set -e
 
 [ -z "$SHA" ] && [ -z "$BRANCH" ] && (echo "missing SHA and BRANCH vars" | tee /dev/stderr) && exit 1
 
-echo on
 cd /
 
 echo "$PRIVATE_KEY" > /root/.ssh/codefresh
@@ -13,7 +12,6 @@ chmod 600 ~/.ssh/*
 #ssh-add $key
 echo "cloning $repo"
 git clone $repo /src
-ls -la
 cd /src
 
 if [ "$BRANCH" ]; then
