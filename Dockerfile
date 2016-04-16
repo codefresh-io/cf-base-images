@@ -9,5 +9,3 @@ COPY ./start.sh /run/start.sh
 
 VOLUME /src
 CMD ["sh", "/run/start.sh"]
-
-LABEL "io.codefresh.owner"="codefresh"
