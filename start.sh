@@ -1,28 +1,14 @@
 set -e
 
-[ -z "$SHA" ] && [ -z "$BRANCH" ] && (echo "missing SHA and BRANCH vars" | tee /dev/stderr) && exit 1
-
-cd /
+[ -z "$REVISION" ] && (echo "missing REVISION var" | tee /dev/stderr) && exit 1
 
 echo "$PRIVATE_KEY" > /root/.ssh/codefresh
 chmod 700 ~/.ssh/
 chmod 600 ~/.ssh/*
 
-#eval "ssh-agent -s"
-#ssh-add $key
-echo "cloning $repo"
-git clone $repo /src
-cd /src
+echo "cloning $REPO"
+cd $WORKING_DIRECTORY
+git clone $REPO $CLONE_DIR
+cd $CLONE_DIR
 
-if [ "$BRANCH" ]; then
-  git checkout $BRANCH
-  if [ "$SHA" ]; then
-    git reset $SHA --hard
-  fi
-else
-  git checkout $SHA
-fi
-
-[ -z "$OWNER" ] || chown -R $OWNER .
-
-
+git checkout $REVISION

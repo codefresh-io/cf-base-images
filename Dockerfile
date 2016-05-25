@@ -1,11 +1,10 @@
-FROM ubuntu:14.04
+FROM alpine:latest
 
-RUN apt-get update && apt-get install -y curl git
+RUN apk add --update git curl
 
 #add ssh record on which ssh key to use
 COPY ./.ssh/ /root/.ssh/
 
 COPY ./start.sh /run/start.sh
 
-VOLUME /src
 CMD ["sh", "/run/start.sh"]
