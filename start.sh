@@ -11,4 +11,7 @@ cd $WORKING_DIRECTORY
 git clone $REPO $CLONE_DIR
 cd $CLONE_DIR
 
-git checkout $REVISION
+if [ -n "$REVISION" ]
+then
+  git checkout $REVISION
+fi
