@@ -6,12 +6,35 @@ echo "$PRIVATE_KEY" > /root/.ssh/codefresh
 chmod 700 ~/.ssh/
 chmod 600 ~/.ssh/*
 
-echo "cloning $REPO"
 cd $WORKING_DIRECTORY
-git clone $REPO $CLONE_DIR
-cd $CLONE_DIR
 
-if [ -n "$REVISION" ]
-then
-  git checkout $REVISION
+# Check if the cloned dir already exists from previous builds
+if [ -d "$CLONE_DIR" ]; then
+
+  # Cloned dir already exists from previous builds so just fetch all the changes
+  echo "updating $REPO"
+  cd $CLONE_DIR
+  git reset -q --hard
+  git fetch
+
+  if [ -n "$REVISION" ]; then
+      git checkout $REVISION
+
+      CURRENT_BRANCH="git branch 2>/dev/null | grep '^*'"
+
+      # If the revision is identical to the current branch we can rebase it with the latest changes. This isn't needed when running detached
+      if [ "$REVISION" == "$CURRENT_BRANCH" ]; then
+         git rebase
+      fi
+  fi
+else
+
+  # Clone a fresh copy
+  echo "cloning $REPO"
+  git clone $REPO $CLONE_DIR
+  cd $CLONE_DIR
+
+  if [ -n "$REVISION" ]; then
+    git checkout $REVISION
+  fi
 fi
