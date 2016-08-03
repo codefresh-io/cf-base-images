@@ -11,6 +11,9 @@ cd $WORKING_DIRECTORY
 # Check if the cloned dir already exists from previous builds
 if [ -d "$CLONE_DIR" ]; then
 
+  # Reset the remote URL because the embedded user token may have changed
+  git remote set-url origin $REPO
+
   # Cloned dir already exists from previous builds so just fetch all the changes
   echo "updating $REPO"
   cd $CLONE_DIR
