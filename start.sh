@@ -12,7 +12,7 @@ cd $WORKING_DIRECTORY
 if [ -d "$CLONE_DIR" ]; then
 
   # Cloned dir already exists from previous builds so just fetch all the changes
-  echo "Preparing to updating $REPO"
+  echo "Preparing to update $REPO"
   cd $CLONE_DIR
 
   # Reset the remote URL because the embedded user token may have changed
