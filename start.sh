@@ -12,16 +12,22 @@ cd $WORKING_DIRECTORY
 if [ -d "$CLONE_DIR" ]; then
 
   # Cloned dir already exists from previous builds so just fetch all the changes
-  echo "updating $REPO"
+  echo "Preparing to updating $REPO"
   cd $CLONE_DIR
 
   # Reset the remote URL because the embedded user token may have changed
   git remote set-url origin $REPO
 
+  echo "Cleaning up the working directory"
   git reset -q --hard
+  git clean -df
+
+  echo "Fetching the updates from origin"
   git fetch
 
   if [ -n "$REVISION" ]; then
+
+      echo "Updating $REPO"
       git checkout $REVISION
 
       CURRENT_BRANCH="git branch 2>/dev/null | grep '^*'"
