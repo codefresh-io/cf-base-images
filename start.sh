@@ -21,6 +21,7 @@ if [ -d "$CLONE_DIR" ]; then
   echo "Cleaning up the working directory"
   git reset -q --hard
   git clean -df
+  git gc
 
   echo "Fetching the updates from origin"
   git fetch
