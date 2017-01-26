@@ -22,6 +22,7 @@ if [ -d "$CLONE_DIR" ]; then
   git reset -q --hard
   git clean -df
   git gc
+  git remote prune origin
 
   echo "Fetching the updates from origin"
   git fetch
