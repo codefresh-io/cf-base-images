@@ -29,13 +29,15 @@ if [ -d "$CLONE_DIR" ]; then
 
   if [ -n "$REVISION" ]; then
 
-      echo "Updating $REPO"
+      echo "Updating $REPO to revision $REVISION"
       git checkout $REVISION
 
       CURRENT_BRANCH="git branch 2>/dev/null | grep '^*'"
 
+      echo "Is revision '$REVISION' equal to the current branch '$CURRENT_BRANCH'?"
       # If the revision is identical to the current branch we can rebase it with the latest changes. This isn't needed when running detached
       if [ "$REVISION" == "$CURRENT_BRANCH" ]; then
+	 echo 'Yes, rebasing.'
          git rebase
       fi
   fi
