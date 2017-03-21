@@ -1,1 +1,14 @@
-[{"image":"codefresh/remote-docker:latest","description":"Deploy image to Swarm"},{"image":"codefresh/cf-deploy-ecs:latest","description":"Deploy image to ECS"}]
+[
+    {
+        "image": "codefresh/remote-docker:latest",
+        "description": "Deploy image to Swarm",
+        "link": "https://docs.codefresh.io/docs/docker-swarm",
+        "code": " # this is a template code\n # new line"
+    },
+    {
+        "image": "codefresh/cf-deploy-ecs:latest",
+        "description": "Deploy image to ECS",
+        "link": "https://docs.codefresh.io/docs/amazon-ecs",
+        "code": " # this is a template code\n # new line"
+    }
+]
