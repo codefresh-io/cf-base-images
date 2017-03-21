@@ -9,6 +9,6 @@
         "image": "codefresh/cf-deploy-ecs:latest",
         "description": "Deploy image to ECS",
         "link": "https://docs.codefresh.io/docs/amazon-ecs",
-        "code": " # this is a template code\n # new line"
+        "code": " # this is a template code\n # new line for ECS"
     }
 ]
