@@ -3,12 +3,12 @@
         "image": "codefresh/remote-docker:latest",
         "description": "Deploy image to Swarm",
         "link": "https://docs.codefresh.io/docs/docker-swarm",
-        "code": " # this is a template code\n # new line"
+        "code": " # Required Environment Variables:\n #\n # SSH_KEY - private SSH key, used to access Docker swarm master machine.\n #           need to replace 'newline' character with SPLIT_CHAR character.\n # SPLIT_CHAR - split character, you've used to replace newline in SSH key. Recommendation: use ',' (comma character).\n #\n # Swarm delpoy command arguments:\n #\n # RDOCKER_HOST - remote Docker swarm master machine, accessible over SSH (for example, ubuntu@ec2-public-ip)\n # STACK_NAME - is new Docker stack name\n #\n # Use command below to deploy compose application to a Swarm cluster\n # rdocker ${{RDOCKER_HOST}} docker stack deploy --compose-file docker-stack.yml ${{STACK_NAME}}\n #\n  read more here: https://docs.codefresh.io/docs/docker-swarm"
     },
     {
         "image": "codefresh/cf-deploy-ecs:latest",
         "description": "Deploy image to ECS",
         "link": "https://docs.codefresh.io/docs/amazon-ecs",
-        "code": " # this is a template code\n # new line for ECS"
+        "code": " # Required Environment Variables:\n #\n # AWS_ACCESS_KEY_ID - AWS access key\n # AWS_SECRET_ACCESS_KEY - AWS secret access key\n #\n # ECS deploy command arguments:\n #\n # AWS_REGION - target AWS region\n # CLUSTER_NAME - ECS cluster name\n # SERVICE_NAME - ECS service names\n #\n # Use command below to deploy application to AWS ECS\n \n # cfecs-update ${{AWS_REGION}} ${{CLUSTER_NAME}} ${{SERVICE_NAME}}\n # read more here: https://docs.codefresh.io/docs/amazon-ecs"
     }
 ]
