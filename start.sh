@@ -8,13 +8,13 @@ chmod 600 ~/.ssh/*
 
 cd $WORKING_DIRECTORY
 
-PUBLIC_REPO=$(echo $REPO | sed -e 's/\/\/.*@/\/\/********@/')
+git config --global credential.helper "/bin/sh -c 'echo username=$USERNAME; echo password=$PASSWORD'"
 
 # Check if the cloned dir already exists from previous builds
 if [ -d "$CLONE_DIR" ]; then
 
   # Cloned dir already exists from previous builds so just fetch all the changes
-  echo "Preparing to update $PUBLIC_REPO"
+  echo "Preparing to update $REPO"
   cd $CLONE_DIR
 
   # Reset the remote URL because the embedded user token may have changed
@@ -31,7 +31,7 @@ if [ -d "$CLONE_DIR" ]; then
 
   if [ -n "$REVISION" ]; then
 
-      echo "Updating $PUBLIC_REPO to revision $REVISION"
+      echo "Updating $REPO to revision $REVISION"
       git checkout $REVISION
 
       CURRENT_BRANCH="`git branch 2>/dev/null | grep '^*' | cut -d' ' -f2-`"
@@ -45,7 +45,7 @@ if [ -d "$CLONE_DIR" ]; then
 else
 
   # Clone a fresh copy
-  echo "cloning $PUBLIC_REPO"
+  echo "cloning $REPO"
   git clone $REPO $CLONE_DIR
   cd $CLONE_DIR
 
