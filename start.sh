@@ -27,7 +27,7 @@ if [ -d "$CLONE_DIR" ]; then
   git remote prune origin
 
   echo "Fetching the updates from origin"
-  git fetch
+  git fetch --tags
 
   if [ -n "$REVISION" ]; then
 
