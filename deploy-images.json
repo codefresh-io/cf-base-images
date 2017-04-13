@@ -10,5 +10,13 @@
         "description": "Deploy image to ECS",
         "link": "https://docs.codefresh.io/docs/amazon-ecs",
         "code": " # Required Environment Variables:\n #\n # AWS_ACCESS_KEY_ID - AWS access key\n # AWS_SECRET_ACCESS_KEY - AWS secret access key\n #\n # ECS deploy command arguments:\n #\n # AWS_REGION - target AWS region\n # CLUSTER_NAME - ECS cluster name\n # SERVICE_NAME - ECS service names\n #\n # Use command below to deploy application to AWS ECS\n \n # cfecs-update ${{AWS_REGION}} ${{CLUSTER_NAME}} ${{SERVICE_NAME}}\n #\n # read more here: https://docs.codefresh.io/docs/amazon-ecs"
+    },
+    {
+        "image": "codefreshio/kubernetes-deployer:master",
+        "description": "Deploy image to Kubernetes",
+        "link": "https://docs.codefresh.io/docs/kubernetes",
+        "code": "# Required Environment Variables:\n #\n # KUBERNETES_USER - The user for the Kubernetes cluster.\n # KUBERNETES_PASSWORD - The password for the Kubernetes cluster.\n # KUBERNETES_SERVER - The server (HTTPS endpoint) of the Kubernetes cluster's API\n #\n # Use command below to deploy compose application to kubernetes\n #\n # /deploy/bin/deploy.sh ./deployment.yml\n #\n # Make sure you change the path of 'deployment.yml' to the path in your repository\n #\n # read more about how to obtain the kubernetes credentials and using the codefresh deploy here: https://docs.codefresh.io/docs/kubernetes\n"
     }
 ]
+
+
