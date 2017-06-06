@@ -1,4 +1,4 @@
-set -e
+# set -e
 
 [ -z "$REVISION" ] && (echo "missing REVISION var" | tee /dev/stderr) && exit 1
 
@@ -21,24 +21,32 @@ if [ -d "$CLONE_DIR" ]; then
   git remote set-url origin $REPO
 
   echo "Cleaning up the working directory"
+
+  echo -e "\n--------\ngit reset -q --hard"
   git reset -q --hard
+
+  echo -e "\n--------\ngit clean -df"
   git clean -df
+
+  echo -e "\n--------\ngit gc"
   git gc
+
+  echo -e "\n--------\ngit remote prune origin"
   git remote prune origin
 
-  echo "Fetching the updates from origin"
+  echo -e "\n--------\nFetching the updates from origin"
   git fetch --tags
 
   if [ -n "$REVISION" ]; then
 
-      echo "Updating $REPO to revision $REVISION"
+      echo -e "\n--------\nUpdating $REPO to revision $REVISION"
       git checkout $REVISION
 
       CURRENT_BRANCH="`git branch 2>/dev/null | grep '^*' | cut -d' ' -f2-`"
 
       # If the revision is identical to the current branch we can rebase it with the latest changes. This isn't needed when running detached
       if [ "$REVISION" == "$CURRENT_BRANCH" ]; then
-	     echo 'Rebasing current branch $REVISION to latest changes...'
+	     echo -e '\n--------\nRebasing current branch $REVISION to latest changes...'
          git rebase
       fi
   fi
