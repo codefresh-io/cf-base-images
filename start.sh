@@ -67,6 +67,6 @@ fi
 
 
 echo "Before wrong command - sleep 120 s...." && sleep 120
-ls asdfasdf
+ls asdfasdf || exit 34
 
 echo "After wrong command"

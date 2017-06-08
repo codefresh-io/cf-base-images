@@ -8,5 +8,4 @@ COPY ./.ssh/ /root/.ssh/
 COPY ./start.sh /run/start.sh
 RUN chmod +x /run/start.sh
 
-
-ENTRYPOINT ["/run/start.sh"]
+CMD ["/bin/bash", "/run/start.sh"]
