@@ -2,7 +2,9 @@
 
 exit_trap () {
   local lc="$BASH_COMMAND" rc=$?
-  echo "Command [$lc] exited with code [$rc]"
+  if [ $rc != 0 ]; then
+    echo "Command [$lc] exited with code [$rc]"
+  fi
 }
 
 trap exit_trap EXIT
@@ -62,3 +64,8 @@ else
     git checkout $REVISION
   fi
 fi
+
+echo "Before wrong command ...."
+ls asdfasdf
+
+echo "After wrong command"
