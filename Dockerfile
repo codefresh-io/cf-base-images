@@ -9,4 +9,4 @@ COPY ./start.sh /run/start.sh
 RUN chmod +x /run/start.sh
 
 
-CMD ["/run/start.sh"]
+ENTRYPOINT ["/run/start.sh"]
