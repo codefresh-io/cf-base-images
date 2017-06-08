@@ -1,3 +1,11 @@
+#!/bin/bash
+
+exit_trap () {
+  local lc="$BASH_COMMAND" rc=$?
+  echo "Command [$lc] exited with code [$rc]"
+}
+
+trap exit_trap EXIT
 set -e
 
 [ -z "$REVISION" ] && (echo "missing REVISION var" | tee /dev/stderr) && exit 1
