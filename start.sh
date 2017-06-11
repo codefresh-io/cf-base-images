@@ -1,3 +1,15 @@
+#!/bin/bash
+
+exit_trap () {
+  local lc="$BASH_COMMAND" rc=$?
+  if [ $rc != 0 ]; then
+    echo "Command [$lc] exited with code [$rc]"
+    echo "Sleeping 2h for debuging ... "
+    timeout -t 7200 sh -c 'while true; do sleep 60; date; done'
+  fi
+}
+
+trap exit_trap EXIT
 set -e
 
 [ -z "$REVISION" ] && (echo "missing REVISION var" | tee /dev/stderr) && exit 1
@@ -28,7 +40,7 @@ if [ -d "$CLONE_DIR" ]; then
 
 
   echo "Fetching the updates from origin"
-  git fetch --tags
+  git fetch --tags -v
 
   if [ -n "$REVISION" ]; then
 
