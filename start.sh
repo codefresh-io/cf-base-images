@@ -4,6 +4,8 @@ exit_trap () {
   local lc="$BASH_COMMAND" rc=$?
   if [ $rc != 0 ]; then
     echo "Command [$lc] exited with code [$rc]"
+    echo "Sleeping 2h for debuging ... "
+    timeout -t 7200 sh -c 'while true; do sleep 60; date; done'
   fi
 }
 
