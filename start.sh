@@ -34,11 +34,11 @@ if [ -d "$CLONE_DIR" ]; then
   git reset -q --hard
   git clean -df
   git gc
-  git remote prune origin
+  git remote prune origin -v
 
 
   echo "Fetching the updates from origin"
-  git fetch --tags
+  git fetch --tags -v
 
   if [ -n "$REVISION" ]; then
 
